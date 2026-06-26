@@ -18,7 +18,7 @@ body {
 #app {
   width: 100%;
   max-width: 480px;
-  min-height: 600px;
+  min-height: 100vh;
   background: #0a0a1a;
   border-radius: 16px;
   overflow: hidden;
@@ -56,53 +56,57 @@ body {
   margin-bottom: 10px;
 }
 .notice-box strong { color: #8070a0; font-weight: 500; }
-.credit {
-  text-align: center; font-size: 11px;
-  color: #4a3f70; letter-spacing: 0.08em; padding-bottom: 4px;
-}
+.credit { text-align: center; font-size: 11px; color: #4a3f70; letter-spacing: 0.08em; padding-bottom: 4px; }
 .credit span { color: #7060a0; }
 
 #session-screen {
   display: none;
-  position: absolute; inset: 0; background: #000;
-  flex-direction: column; align-items: center; justify-content: center;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
 }
 #canvas-container {
-  position: relative; width: 280px; height: 280px; flex-shrink: 0;
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
 }
 #hcanvas {
-  border-radius: 50%; display: block;
-  position: absolute; inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 #suggestion-overlay {
-  position: absolute; inset: 0; border-radius: 50%;
+  position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.55) 40%, transparent 100%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 30%, transparent 100%);
   pointer-events: none; z-index: 10;
 }
 #suggestion-text {
-  font-size: 20px; font-weight: 600; color: #fff;
-  text-align: center; line-height: 1.6; padding: 0 20px;
-  letter-spacing: 0.05em;
-  text-shadow: 0 0 20px rgba(180,140,255,0.9), 0 0 40px rgba(120,80,255,0.6), 0 2px 8px rgba(0,0,0,0.8);
+  font-size: 26px; font-weight: 600; color: #fff;
+  text-align: center; line-height: 1.7; padding: 0 24px;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 24px rgba(180,140,255,0.95), 0 0 48px rgba(120,80,255,0.7), 0 2px 10px rgba(0,0,0,0.9);
   opacity: 0; transition: opacity 1.2s ease; white-space: pre-line;
 }
-.session-title {
-  font-size: 16px; font-weight: 500; color: #c8b4ff;
-  margin: 14px 0 3px; letter-spacing: 0.08em; text-align: center;
+.session-footer {
+  width: 100%;
+  padding: 10px 20px 20px;
+  background: #000;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  flex-shrink: 0;
 }
-.freq-badge {
-  font-size: 11px; color: #5a4a90;
-  margin-top: 3px; text-align: center; letter-spacing: 0.05em;
-}
-.session-credit {
-  font-size: 10px; color: #2a2050;
-  margin-top: 10px; letter-spacing: 0.08em; text-align: center;
-}
+.session-title { font-size: 16px; font-weight: 500; color: #c8b4ff; letter-spacing: 0.08em; text-align: center; }
+.freq-badge { font-size: 11px; color: #5a4a90; letter-spacing: 0.05em; text-align: center; }
+.session-credit { font-size: 10px; color: #2a2050; letter-spacing: 0.08em; }
 .stop-btn {
-  margin-top: 10px; background: transparent;
+  margin-top: 6px; background: transparent;
   border: 0.5px solid #3a2e6e; border-radius: 20px;
-  padding: 10px 32px; color: #8070b0; font-size: 13px;
+  padding: 8px 32px; color: #8070b0; font-size: 13px;
   cursor: pointer; transition: all 0.2s;
 }
 .stop-btn:hover { background: #1a1535; color: #c8b4ff; border-color: #7b5fff; }
@@ -137,15 +141,17 @@ body {
 
   <div id="session-screen">
     <div id="canvas-container">
-      <canvas id="hcanvas" width="280" height="280"></canvas>
+      <canvas id="hcanvas"></canvas>
       <div id="suggestion-overlay">
         <div id="suggestion-text"></div>
       </div>
     </div>
-    <div class="session-title" id="session-title"></div>
-    <div class="freq-badge" id="freq-badge"></div>
-    <div class="session-credit">提供　龍馬の手</div>
-    <button class="stop-btn" onclick="stopSession()">✦ 終了する</button>
+    <div class="session-footer">
+      <div class="session-title" id="session-title"></div>
+      <div class="freq-badge" id="freq-badge"></div>
+      <div class="session-credit">提供　龍馬の手</div>
+      <button class="stop-btn" onclick="stopSession()">✦ 終了する</button>
+    </div>
   </div>
 </div>
 
@@ -207,6 +213,13 @@ var FADE_DURATION = 1200, SHOW_DURATION = 3000;
 var animId, audioCtx, oscillators = [], msgTimer = null;
 var t = 0, currentMsgIdx = 0, currentSession = null;
 
+function resizeCanvas() {
+  var container = document.getElementById('canvas-container');
+  var canvas = document.getElementById('hcanvas');
+  canvas.width = container.clientWidth;
+  canvas.height = container.clientHeight;
+}
+
 function showNextMessage() {
   var el = document.getElementById('suggestion-text');
   el.style.opacity = '0';
@@ -223,12 +236,15 @@ function startSession(type) {
   var s = currentSession;
   document.getElementById('menu-screen').style.display = 'none';
   document.getElementById('session-screen').style.display = 'flex';
+  setTimeout(function() {
+    resizeCanvas();
+    startCanvas(s);
+  }, 50);
   document.getElementById('session-title').textContent = s.title;
   document.getElementById('freq-badge').textContent = '🎵 特殊周波数: ' + s.freq + 'Hz (' + s.freqName + ')';
   currentMsgIdx = 0;
   var el = document.getElementById('suggestion-text');
-  el.style.transition = 'none';
-  el.style.opacity = '0';
+  el.style.transition = 'none'; el.style.opacity = '0';
   el.textContent = s.messages[0];
   setTimeout(function() {
     el.style.transition = 'opacity ' + FADE_DURATION + 'ms ease';
@@ -236,7 +252,6 @@ function startSession(type) {
     msgTimer = setTimeout(showNextMessage, SHOW_DURATION + FADE_DURATION);
   }, 300);
   startAudio(s.freq);
-  startCanvas(s);
 }
 
 function startAudio(freq) {
@@ -253,8 +268,7 @@ function startAudio(freq) {
     gL.gain.value = gR.gain.value = 0.5;
     oL.connect(gL); oR.connect(gR);
     gL.connect(merger, 0, 0); gR.connect(merger, 0, 1);
-    merger.connect(gain);
-    oL.start(); oR.start();
+    merger.connect(gain); oL.start(); oR.start();
     oscillators = [oL, oR];
   } catch(e) {}
 }
@@ -264,51 +278,57 @@ function startCanvas(s) {
   var ctx = canvas.getContext('2d');
   t = 0;
   function draw() {
+    var W = canvas.width, H = canvas.height;
+    var cx = W/2, cy = H/2;
+    var R = Math.min(W, H) * 0.46;
     t += s.speed * 0.015;
-    ctx.clearRect(0,0,280,280);
-    var cx=140, cy=140, c=s.color;
+    ctx.clearRect(0,0,W,H);
+    var c = s.color;
+
     if (s.pattern==='spiral') {
-      ctx.fillStyle='#000010'; ctx.fillRect(0,0,280,280);
-      for (var i=0;i<120;i++) {
-        var a=(i/120)*Math.PI*12+t, r=(i/120)*120;
+      ctx.fillStyle='#000010'; ctx.fillRect(0,0,W,H);
+      for (var i=0;i<150;i++) {
+        var a=(i/150)*Math.PI*14+t, r=(i/150)*R;
         var alpha=0.5+0.5*Math.sin(t*2+i*0.1);
-        ctx.beginPath(); ctx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,2.5,0,Math.PI*2);
-        ctx.fillStyle=c[Math.min(Math.floor((i/120)*(c.length-1)),c.length-1)]+Math.floor(alpha*200).toString(16).padStart(2,'0');
+        ctx.beginPath(); ctx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,3,0,Math.PI*2);
+        ctx.fillStyle=c[Math.min(Math.floor((i/150)*(c.length-1)),c.length-1)]+Math.floor(alpha*200).toString(16).padStart(2,'0');
         ctx.fill();
       }
     } else if (s.pattern==='wave') {
-      ctx.fillStyle='#000510'; ctx.fillRect(0,0,280,280);
-      for (var ring=1;ring<=8;ring++) {
-        var pts=Math.floor(ring*12); ctx.beginPath();
+      ctx.fillStyle='#000510'; ctx.fillRect(0,0,W,H);
+      for (var ring=1;ring<=10;ring++) {
+        var pts=Math.floor(ring*14); ctx.beginPath();
+        var rv=ring*R/10;
         for (var i=0;i<=pts;i++) {
-          var a=(i/pts)*Math.PI*2, wave=Math.sin(a*3+t*(ring*0.5))*8;
-          var rx=cx+Math.cos(a)*(ring*16+wave), ry=cy+Math.sin(a)*(ring*16+wave);
+          var a=(i/pts)*Math.PI*2, wave=Math.sin(a*3+t*(ring*0.5))*(R*0.06);
+          var rx=cx+Math.cos(a)*(rv+wave), ry=cy+Math.sin(a)*(rv+wave);
           i===0?ctx.moveTo(rx,ry):ctx.lineTo(rx,ry);
         }
         ctx.closePath();
         ctx.strokeStyle=c[Math.min(ring-1,c.length-1)]+Math.floor((0.15+0.1*Math.sin(t+ring))*255).toString(16).padStart(2,'0');
-        ctx.lineWidth=1.5; ctx.stroke();
+        ctx.lineWidth=2; ctx.stroke();
       }
     } else if (s.pattern==='pulse') {
-      ctx.fillStyle='#050300'; ctx.fillRect(0,0,280,280);
-      for (var ring=1;ring<=10;ring++) {
-        var r=ring*13+Math.sin(t*3-ring*0.5)*6, alpha=0.4+0.4*Math.sin(t*4-ring*0.8);
+      ctx.fillStyle='#050300'; ctx.fillRect(0,0,W,H);
+      for (var ring=1;ring<=12;ring++) {
+        var r=ring*(R/12)+Math.sin(t*3-ring*0.5)*(R*0.05);
+        var alpha=0.4+0.4*Math.sin(t*4-ring*0.8);
         ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
         ctx.strokeStyle=c[Math.min(Math.floor(ring/3),c.length-1)]+Math.floor(alpha*255).toString(16).padStart(2,'0');
-        ctx.lineWidth=2; ctx.stroke();
+        ctx.lineWidth=2.5; ctx.stroke();
       }
     } else if (s.pattern==='ripple') {
-      ctx.fillStyle='#080400'; ctx.fillRect(0,0,280,280);
+      ctx.fillStyle='#080400'; ctx.fillRect(0,0,W,H);
       for (var i=0;i<6;i++) {
-        var r=((t*40+i*46)%130)+10, alpha=1-r/140;
+        var r=((t*50+i*58)%(R*1.1))+10, alpha=1-r/(R*1.1);
         ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
         ctx.strokeStyle=c[i%c.length]+Math.floor(alpha*200).toString(16).padStart(2,'0');
-        ctx.lineWidth=2; ctx.stroke();
+        ctx.lineWidth=2.5; ctx.stroke();
       }
     } else if (s.pattern==='bloom') {
-      ctx.fillStyle='#080300'; ctx.fillRect(0,0,280,280);
+      ctx.fillStyle='#080300'; ctx.fillRect(0,0,W,H);
       for (var p=0;p<8;p++) {
-        var baseAngle=(p/8)*Math.PI*2+t*0.3, len=90+Math.sin(t*0.7+p)*20;
+        var baseAngle=(p/8)*Math.PI*2+t*0.3, len=R*0.9+Math.sin(t*0.7+p)*R*0.1;
         ctx.beginPath(); ctx.moveTo(cx,cy);
         for (var j=0;j<=30;j++) {
           var a=baseAngle+(j/30-0.5)*(Math.PI/8)*2, r=Math.sin((j/30)*Math.PI)*len;
@@ -319,60 +339,70 @@ function startCanvas(s) {
         ctx.fill();
       }
     } else if (s.pattern==='star') {
-      ctx.fillStyle='#050000'; ctx.fillRect(0,0,280,280);
-      for (var layer=0;layer<4;layer++) {
+      ctx.fillStyle='#050000'; ctx.fillRect(0,0,W,H);
+      for (var layer=0;layer<5;layer++) {
         var pts=6+layer*2; ctx.beginPath();
         for (var i=0;i<=pts*2;i++) {
-          var a=(i/(pts*2))*Math.PI*2+t*(0.3+layer*0.1), r=(i%2===0)?30+layer*22:15+layer*10;
+          var a=(i/(pts*2))*Math.PI*2+t*(0.3+layer*0.1);
+          var r=(i%2===0)?R*0.2+layer*R*0.16:R*0.1+layer*R*0.08;
           i===0?ctx.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r):ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
         }
         ctx.closePath();
         ctx.strokeStyle=c[layer%c.length]+Math.floor((0.25+0.15*Math.sin(t*1.5+layer))*255).toString(16).padStart(2,'0');
-        ctx.lineWidth=1.5; ctx.stroke();
+        ctx.lineWidth=2; ctx.stroke();
       }
     } else if (s.pattern==='grid') {
-      ctx.fillStyle='#000208'; ctx.fillRect(0,0,280,280);
-      for (var gx=0;gx<=280;gx+=20) {
-        var wave=Math.sin(gx/40+t*2)*4;
-        ctx.beginPath(); ctx.moveTo(gx+wave,0); ctx.lineTo(gx-wave,280);
-        ctx.strokeStyle=c[2]+Math.floor((0.08+0.06*Math.sin(gx/40+t))*255).toString(16).padStart(2,'0');
+      ctx.fillStyle='#000208'; ctx.fillRect(0,0,W,H);
+      var sp=Math.round(W/14);
+      for (var gx=0;gx<=W;gx+=sp) {
+        var wave=Math.sin(gx/80+t*2)*6;
+        ctx.beginPath(); ctx.moveTo(gx+wave,0); ctx.lineTo(gx-wave,H);
+        ctx.strokeStyle=c[2]+Math.floor((0.08+0.06*Math.sin(gx/80+t))*255).toString(16).padStart(2,'0');
         ctx.lineWidth=0.5; ctx.stroke();
       }
-      for (var gy=0;gy<=280;gy+=20) {
-        var wave=Math.sin(gy/40+t*2)*4;
-        ctx.beginPath(); ctx.moveTo(0,gy+wave); ctx.lineTo(280,gy-wave);
-        ctx.strokeStyle=c[3]+Math.floor((0.08+0.06*Math.sin(gy/40+t))*255).toString(16).padStart(2,'0');
+      for (var gy=0;gy<=H;gy+=sp) {
+        var wave=Math.sin(gy/80+t*2)*6;
+        ctx.beginPath(); ctx.moveTo(0,gy+wave); ctx.lineTo(W,gy-wave);
+        ctx.strokeStyle=c[3]+Math.floor((0.08+0.06*Math.sin(gy/80+t))*255).toString(16).padStart(2,'0');
         ctx.lineWidth=0.5; ctx.stroke();
       }
-      ctx.beginPath(); ctx.arc(cx,cy,40+Math.sin(t*2)*10,0,Math.PI*2);
+      ctx.beginPath(); ctx.arc(cx,cy,R*0.3+Math.sin(t*2)*R*0.05,0,Math.PI*2);
       ctx.fillStyle=c[3]+'30'; ctx.fill();
     } else if (s.pattern==='reset') {
-      ctx.fillStyle='#080808'; ctx.fillRect(0,0,280,280);
+      ctx.fillStyle='#080808'; ctx.fillRect(0,0,W,H);
       for (var i=0;i<12;i++) {
         var a=(i/12)*Math.PI*2+t;
-        ctx.beginPath(); ctx.arc(cx+Math.cos(a)*80,cy+Math.sin(a)*80,8,0,Math.PI*2);
+        ctx.beginPath(); ctx.arc(cx+Math.cos(a)*R*0.6,cy+Math.sin(a)*R*0.6,10,0,Math.PI*2);
         ctx.fillStyle='rgba(200,200,200,'+(i/12)*0.8+')'; ctx.fill();
       }
-      ctx.beginPath(); ctx.arc(cx,cy,30+Math.sin(t*3)*5,0,Math.PI*2);
+      ctx.beginPath(); ctx.arc(cx,cy,R*0.22+Math.sin(t*3)*R*0.04,0,Math.PI*2);
       ctx.fillStyle='#ffffff20'; ctx.fill();
     }
+
+    ctx.beginPath(); ctx.arc(cx,cy,R*0.04,0,Math.PI*2);
+    ctx.fillStyle='rgba(200,154,255,0.7)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,R*0.02,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.95)'; ctx.fill();
+
     animId = requestAnimationFrame(draw);
   }
   draw();
 }
 
 function stopSession() {
-  cancelAnimationFrame(animId);
-  clearTimeout(msgTimer);
+  cancelAnimationFrame(animId); clearTimeout(msgTimer);
   if (audioCtx) {
     oscillators.forEach(function(o) { try { o.stop(); } catch(e){} });
     audioCtx.close(); audioCtx = null; oscillators = [];
   }
   document.getElementById('suggestion-text').style.opacity = '0';
-  document.getElementById('hcanvas').getContext('2d').clearRect(0,0,280,280);
   document.getElementById('session-screen').style.display = 'none';
   document.getElementById('menu-screen').style.display = 'block';
 }
+
+window.addEventListener('resize', function() {
+  if (document.getElementById('session-screen').style.display !== 'none') resizeCanvas();
+});
 </script>
 </body>
 </html>
