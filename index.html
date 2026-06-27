@@ -8,78 +8,220 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: #06060f;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  display: flex; justify-content: center; align-items: flex-start;
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-  padding: 20px 0 40px;
+  padding: 0 0 40px;
 }
 #app {
-  width: 100%;
-  max-width: 480px;
-  min-height: 100vh;
-  background: #0a0a1a;
-  border-radius: 16px;
-  overflow: hidden;
-  color: #fff;
-  position: relative;
+  width: 100%; max-width: 480px; min-height: 100vh;
+  background: #0a0a1a; overflow: hidden; color: #fff; position: relative;
 }
-#menu-screen { padding: 24px 20px 12px; }
+
+/* ===== トップ画面 ===== */
+#top-screen { padding: 28px 16px 20px; }
 .app-title {
-  text-align: center; font-size: 22px; font-weight: 500;
+  text-align: center; font-size: 26px; font-weight: 500;
   color: #c8b4ff; letter-spacing: 0.1em; margin-bottom: 4px;
 }
-.app-subtitle {
-  text-align: center; font-size: 12px; color: #8870cc;
-  margin-bottom: 20px; letter-spacing: 0.05em;
+.app-subtitle { text-align: center; font-size: 13px; color: #8870cc; margin-bottom: 6px; letter-spacing: 0.05em; }
+.earphone-banner {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: linear-gradient(135deg,#1e1040,#2a1860);
+  border: 1px solid #7b5fff; border-radius: 12px; padding: 10px 16px; margin-bottom: 24px;
 }
-.menu-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 10px; margin-bottom: 12px;
+.earphone-banner .ep-icon { font-size: 22px; }
+.earphone-banner .ep-text { font-size: 13px; font-weight: 600; color: #c8b4ff; line-height: 1.4; }
+.earphone-banner .ep-sub { font-size: 11px; color: #8060cc; font-weight: 400; }
+
+/* ロードマップ */
+.roadmap { display: flex; flex-direction: column; gap: 0; margin-bottom: 24px; }
+.roadmap-step {
+  display: flex; align-items: stretch; gap: 0;
 }
-.menu-btn {
-  background: #13112a; border: 0.5px solid #3a2e6e;
-  border-radius: 12px; padding: 14px 10px; cursor: pointer;
-  text-align: center; transition: background 0.2s, border-color 0.2s, transform 0.1s;
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
+.roadmap-left {
+  display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0;
 }
-.menu-btn:hover { background: #1e1845; border-color: #7b5fff; transform: scale(1.02); }
-.menu-btn:active { transform: scale(0.98); }
-.menu-btn .icon { font-size: 24px; line-height: 1; }
-.menu-btn .label { font-size: 13px; font-weight: 500; color: #d0c4ff; }
-.menu-btn .desc { font-size: 11px; color: #7060a0; line-height: 1.3; }
+.step-circle {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; flex-shrink: 0;
+}
+.step-line { width: 2px; flex: 1; min-height: 20px; }
+.roadmap-card {
+  flex: 1; border-radius: 14px; padding: 14px 16px; margin: 0 0 0 8px;
+  cursor: pointer; transition: transform 0.15s, opacity 0.15s;
+  margin-bottom: 8px;
+}
+.roadmap-card:hover { transform: scale(1.02); }
+.roadmap-card:active { transform: scale(0.98); }
+.step-num { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; margin-bottom: 3px; }
+.step-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.step-desc { font-size: 12px; line-height: 1.5; opacity: 0.8; }
+
+/* STEP1 */
+.step1 .step-circle { background: #1a3a6a; color: #60b0ff; border: 2px solid #3060a0; }
+.step1 .step-line { background: linear-gradient(#3060a0, #6040a0); }
+.step1 .roadmap-card { background: linear-gradient(135deg,#0a1a3a,#14244a); border: 1px solid #3060a0; }
+.step1 .step-num { color: #60b0ff; }
+.step1 .step-title { color: #90d0ff; }
+.step1 .step-desc { color: #6090c0; }
+
+/* STEP2 */
+.step2 .step-circle { background: #2a1060; color: #c89aff; border: 2px solid #6040b0; }
+.step2 .step-line { background: linear-gradient(#6040a0, #804040); }
+.step2 .roadmap-card { background: linear-gradient(135deg,#120a2a,#1e1040); border: 1px solid #6040b0; }
+.step2 .step-num { color: #c89aff; }
+.step2 .step-title { color: #d4b0ff; }
+.step2 .step-desc { color: #8060b0; }
+
+/* STEP3 */
+.step3 .step-circle { background: #3a1a0a; color: #ffb060; border: 2px solid #a06020; }
+.step3 .roadmap-card { background: linear-gradient(135deg,#1a0a00,#2a1400); border: 1px solid #a06020; }
+.step3 .step-num { color: #ffb060; }
+.step3 .step-title { color: #ffd080; }
+.step3 .step-desc { color: #b07040; }
+
 .notice-box {
   background: #0d0b20; border: 0.5px solid #2a2050;
   border-radius: 10px; padding: 10px 14px;
-  font-size: 10px; color: #5a4f80; line-height: 1.6;
-  margin-bottom: 10px;
+  font-size: 10px; color: #5a4f80; line-height: 1.6; margin-bottom: 10px;
 }
 .notice-box strong { color: #8070a0; font-weight: 500; }
-.credit { text-align: center; font-size: 11px; color: #4a3f70; letter-spacing: 0.08em; padding-bottom: 4px; }
+.credit { text-align: center; font-size: 12px; color: #4a3f70; letter-spacing: 0.08em; padding-bottom: 4px; }
 .credit span { color: #7060a0; }
 
+/* ===== STEP1：催眠導入画面 ===== */
+#intro-screen {
+  display: none; position: fixed; inset: 0; background: #050d1a;
+  flex-direction: column; align-items: center; z-index: 50; overflow-y: auto;
+}
+.intro-header {
+  width: 100%; padding: 20px 20px 12px;
+  background: linear-gradient(180deg,#050d1a,transparent);
+  position: sticky; top: 0; z-index: 10;
+}
+.intro-header-title { font-size: 13px; color: #60b0ff; letter-spacing: 0.1em; margin-bottom: 4px; }
+.intro-header-main { font-size: 20px; font-weight: 700; color: #90d0ff; }
+.intro-content { width: 100%; padding: 0 20px 100px; }
+.intro-section {
+  background: #0a1a2a; border: 1px solid #1a3a5a; border-radius: 14px;
+  padding: 16px; margin-bottom: 14px;
+}
+.intro-section-title { font-size: 14px; font-weight: 700; color: #60b0ff; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.intro-step-item { margin-bottom: 12px; }
+.intro-step-label { font-size: 12px; color: #4080a0; margin-bottom: 4px; font-weight: 600; }
+.intro-step-text { font-size: 13px; color: #80b0d0; line-height: 1.7; }
+.breath-visual {
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 0 10px;
+}
+#breath-circle {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle, #1a4a8a, #0a1a3a);
+  border: 2px solid #3060a0;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0s;
+  font-size: 13px; color: #60b0ff; font-weight: 600; text-align: center; line-height: 1.4;
+}
+.breath-btn {
+  display: block; width: 100%; padding: 14px;
+  background: linear-gradient(135deg,#1a3a6a,#0a2a5a);
+  border: 1px solid #3060a0; border-radius: 12px;
+  color: #90d0ff; font-size: 15px; font-weight: 600;
+  cursor: pointer; text-align: center; margin-bottom: 10px;
+  transition: all 0.2s;
+}
+.breath-btn:hover { background: linear-gradient(135deg,#2a4a8a,#1a3a6a); }
+.intro-next-btn {
+  display: block; width: 100%; padding: 16px;
+  background: linear-gradient(135deg,#2a1060,#4a20a0);
+  border: 1px solid #7b5fff; border-radius: 14px;
+  color: #d4b0ff; font-size: 16px; font-weight: 700;
+  cursor: pointer; text-align: center; margin-top: 6px;
+  transition: all 0.2s; letter-spacing: 0.05em;
+}
+.intro-next-btn:hover { background: linear-gradient(135deg,#3a1a80,#5a30b0); }
+.back-btn {
+  background: transparent; border: none; color: #4a4a6a;
+  font-size: 13px; cursor: pointer; padding: 4px 0; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* ===== STEP2：メニュー画面 ===== */
+#menu-screen {
+  display: none; position: fixed; inset: 0; background: #0a0a1a;
+  flex-direction: column; z-index: 50; overflow-y: auto;
+}
+.menu-header {
+  padding: 20px 20px 12px; position: sticky; top: 0;
+  background: #0a0a1a; z-index: 10; border-bottom: 1px solid #1a1535;
+}
+.menu-header-step { font-size: 12px; color: #c89aff; letter-spacing: 0.1em; margin-bottom: 4px; }
+.menu-header-title { font-size: 20px; font-weight: 700; color: #d4b0ff; }
+.menu-content { padding: 16px 16px 100px; }
+.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.menu-btn {
+  background: #13112a; border: 0.5px solid #3a2e6e;
+  border-radius: 16px; padding: 20px 10px; cursor: pointer;
+  text-align: center; transition: background 0.2s, border-color 0.2s, transform 0.1s;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.menu-btn:hover { background: #1e1845; border-color: #7b5fff; transform: scale(1.02); }
+.menu-btn:active { transform: scale(0.98); }
+.menu-btn .icon { font-size: 32px; line-height: 1; }
+.menu-btn .label { font-size: 15px; font-weight: 500; color: #d0c4ff; }
+.menu-btn .desc { font-size: 12px; color: #7060a0; line-height: 1.4; }
+.menu-back-bar {
+  padding: 12px 16px 20px; position: sticky; bottom: 0;
+  background: linear-gradient(transparent, #0a0a1a 40%);
+}
+
+/* ===== STEP3：完全覚醒画面 ===== */
+#awaken-screen {
+  display: none; position: fixed; inset: 0; background: #0f0800;
+  flex-direction: column; align-items: center; z-index: 50; overflow-y: auto;
+}
+.awaken-header { width: 100%; padding: 20px 20px 12px; }
+.awaken-header-title { font-size: 13px; color: #ffb060; letter-spacing: 0.1em; margin-bottom: 4px; }
+.awaken-header-main { font-size: 20px; font-weight: 700; color: #ffd080; }
+.awaken-content { width: 100%; padding: 0 20px 100px; }
+.awaken-section {
+  background: #1a0e00; border: 1px solid #5a3010; border-radius: 14px;
+  padding: 16px; margin-bottom: 14px;
+}
+.awaken-section-title { font-size: 14px; font-weight: 700; color: #ffb060; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.awaken-step-text { font-size: 13px; color: #c09060; line-height: 1.7; }
+#awaken-circle {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle, #3a2000, #1a0e00);
+  border: 2px solid #a06020;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: #ffb060; font-weight: 600; text-align: center; line-height: 1.4;
+  transition: transform 0s;
+}
+.awaken-btn {
+  display: block; width: 100%; padding: 14px;
+  background: linear-gradient(135deg,#3a1a00,#2a1000);
+  border: 1px solid #a06020; border-radius: 12px;
+  color: #ffd080; font-size: 15px; font-weight: 600;
+  cursor: pointer; text-align: center; margin-bottom: 10px; transition: all 0.2s;
+}
+.awaken-finish-btn {
+  display: block; width: 100%; padding: 16px;
+  background: linear-gradient(135deg,#3a2000,#6a3800);
+  border: 1px solid #c07020; border-radius: 14px;
+  color: #ffd080; font-size: 16px; font-weight: 700;
+  cursor: pointer; text-align: center; margin-top: 6px; transition: all 0.2s;
+}
+
+/* ===== セッション画面 ===== */
 #session-screen {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 100;
+  display: none; position: fixed; inset: 0; background: #000;
+  flex-direction: column; align-items: center; justify-content: space-between; z-index: 100;
 }
-#canvas-container {
-  position: relative;
-  width: 100%;
-  flex: 1;
-  min-height: 0;
-}
-#hcanvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
+#canvas-container { position: relative; width: 100%; flex: 1; min-height: 0; }
+#hcanvas { display: block; width: 100%; height: 100%; }
 #suggestion-overlay {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -88,25 +230,20 @@ body {
 }
 #suggestion-text {
   font-size: 26px; font-weight: 600; color: #fff;
-  text-align: center; line-height: 1.7; padding: 0 24px;
-  letter-spacing: 0.06em;
+  text-align: center; line-height: 1.7; padding: 0 24px; letter-spacing: 0.06em;
   text-shadow: 0 0 24px rgba(180,140,255,0.95), 0 0 48px rgba(120,80,255,0.7), 0 2px 10px rgba(0,0,0,0.9);
   opacity: 0; transition: opacity 1.2s ease; white-space: pre-line;
 }
 .session-footer {
-  width: 100%;
-  padding: 10px 20px 20px;
-  background: #000;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  flex-shrink: 0;
+  width: 100%; padding: 10px 20px 20px; background: #000;
+  display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0;
 }
 .session-title { font-size: 16px; font-weight: 500; color: #c8b4ff; letter-spacing: 0.08em; text-align: center; }
 .freq-badge { font-size: 11px; color: #5a4a90; letter-spacing: 0.05em; text-align: center; }
 .session-credit { font-size: 10px; color: #2a2050; letter-spacing: 0.08em; }
 .stop-btn {
-  margin-top: 6px; background: transparent;
-  border: 0.5px solid #3a2e6e; border-radius: 20px;
-  padding: 8px 32px; color: #8070b0; font-size: 13px;
+  margin-top: 6px; background: transparent; border: 0.5px solid #3a2e6e;
+  border-radius: 20px; padding: 8px 32px; color: #8070b0; font-size: 13px;
   cursor: pointer; transition: all 0.2s;
 }
 .stop-btn:hover { background: #1a1535; color: #c8b4ff; border-color: #7b5fff; }
@@ -114,37 +251,211 @@ body {
 </head>
 <body>
 <div id="app">
-  <div id="menu-screen">
+
+  <!-- ===== トップ画面 ===== -->
+  <div id="top-screen">
     <div class="app-title">✦ 自己催眠アプリ ✦</div>
     <div class="app-subtitle">現役プロ催眠術師監修</div>
-    <div class="menu-grid">
-      <button class="menu-btn" onclick="startSession('sleep')"><span class="icon">🌙</span><span class="label">睡眠導入</span><span class="desc">深いリラックスへ誘う</span></button>
-      <button class="menu-btn" onclick="startSession('relax')"><span class="icon">🌊</span><span class="label">緊張緩和</span><span class="desc">ストレスを手放す</span></button>
-      <button class="menu-btn" onclick="startSession('motivation')"><span class="icon">⚡</span><span class="label">やる気スイッチ</span><span class="desc">集中力を高める</span></button>
-      <button class="menu-btn" onclick="startSession('tasty')"><span class="icon">🍽️</span><span class="label">美味しくなる</span><span class="desc">食の喜びを増幅</span></button>
-      <button class="menu-btn" onclick="startSession('sweet')"><span class="icon">🍯</span><span class="label">味が甘くなる</span><span class="desc">甘みを感じやすくする</span></button>
-      <button class="menu-btn" onclick="startSession('rich')"><span class="icon">🌶️</span><span class="label">味が濃くなる</span><span class="desc">風味を引き出す</span></button>
-      <button class="menu-btn" onclick="startSession('focus')"><span class="icon">🎯</span><span class="label">集中モード</span><span class="desc">雑念を取り除く</span></button>
-      <button class="menu-btn" onclick="startSession('confidence')"><span class="icon">🌟</span><span class="label">自信を高める</span><span class="desc">内なる力を引き出す</span></button>
-      <button class="menu-btn" onclick="startSession('pain')"><span class="icon">🌿</span><span class="label">痛み緩和</span><span class="desc">不快感を和らげる</span></button>
-      <button class="menu-btn" onclick="startSession('reset')"><span class="icon">♻️</span><span class="label">催眠リセット</span><span class="desc">催眠を解く</span></button>
+    <div class="earphone-banner">
+      <span class="ep-icon">🎧</span>
+      <div class="ep-text">
+        イヤホン・ヘッドホン使用推奨<br>
+        <span class="ep-sub">バイノーラル音響効果を最大限に体験できます</span>
+      </div>
     </div>
+
+    <div class="roadmap">
+      <!-- STEP1 -->
+      <div class="roadmap-step step1">
+        <div class="roadmap-left">
+          <div class="step-circle">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="roadmap-card step1" onclick="showIntro()">
+          <div class="step-num">STEP 1</div>
+          <div class="step-title">🌬️ 催眠導入</div>
+          <div class="step-desc">呼吸法・リラクゼーションで心身を整え、催眠状態に入る準備をします</div>
+        </div>
+      </div>
+      <!-- STEP2 -->
+      <div class="roadmap-step step2">
+        <div class="roadmap-left">
+          <div class="step-circle">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="roadmap-card step2" onclick="showMenu()">
+          <div class="step-num">STEP 2</div>
+          <div class="step-title">✦ 催眠メニュー</div>
+          <div class="step-desc">目的に合った催眠プログラムを選択して、深い暗示をかけます</div>
+        </div>
+      </div>
+      <!-- STEP3 -->
+      <div class="roadmap-step step3">
+        <div class="roadmap-left">
+          <div class="step-circle">3</div>
+        </div>
+        <div class="roadmap-card step3" onclick="showAwaken()">
+          <div class="step-num">STEP 3</div>
+          <div class="step-title">☀️ 完全覚醒</div>
+          <div class="step-desc">催眠から解いて、目をぱっちり覚ます覚醒法を行います</div>
+        </div>
+      </div>
+    </div>
+
     <div class="notice-box">
       <strong>【ご注意事項】</strong><br>
       ・本アプリは催眠効果を引き出すものであり、治療行為ではありません。<br>
-      ・効果を感じない場合は、かかりつけの医療機関へご相談ください。<br>
+      ・体質改善の効果を感じない場合は、かかりつけの医療機関へご相談ください。<br>
       ・体調が悪くなった場合は直ちに使用をおやめください。<br>
       ・効果の有無についての責任は負いかねます。ご使用は自己責任でお願いします。
     </div>
     <div class="credit">提供　<span>龍馬の手</span></div>
   </div>
 
+  <!-- ===== STEP1：催眠導入 ===== -->
+  <div id="intro-screen">
+    <div class="intro-header">
+      <button class="back-btn" onclick="hideIntro()">← 戻る</button>
+      <div class="intro-header-title">STEP 1</div>
+      <div class="intro-header-main">🌬️ 催眠導入（リラクゼーション）</div>
+    </div>
+    <div class="intro-content">
+      <div class="intro-section">
+        <div class="intro-section-title">🫁 腹式呼吸法</div>
+        <div class="intro-step-item">
+          <div class="intro-step-label">① 姿勢を整える</div>
+          <div class="intro-step-text">椅子に深く腰掛けるか、仰向けに寝てください。背筋を軽く伸ばし、両肩の力を抜きます。</div>
+        </div>
+        <div class="intro-step-item">
+          <div class="intro-step-label">② 鼻から息を吸う（4秒）</div>
+          <div class="intro-step-text">お腹を膨らませながら、鼻からゆっくり4秒かけて息を吸います。</div>
+        </div>
+        <div class="intro-step-item">
+          <div class="intro-step-label">③ 息を止める（4秒）</div>
+          <div class="intro-step-text">吸い切ったら4秒間、そのまま息を止めます。</div>
+        </div>
+        <div class="intro-step-item">
+          <div class="intro-step-label">④ 口からゆっくり吐く（8秒）</div>
+          <div class="intro-step-text">口からゆっくりと8秒かけて息を吐き出します。お腹が凹んでいくのを感じてください。</div>
+        </div>
+        <div class="breath-visual">
+          <div id="breath-circle">タップして<br>開始</div>
+        </div>
+        <button class="breath-btn" onclick="startBreath()">🌬️ 呼吸ガイドを開始する</button>
+      </div>
+
+      <div class="intro-section">
+        <div class="intro-section-title">🧘 筋弛緩法</div>
+        <div class="intro-step-item">
+          <div class="intro-step-label">① 足先から始める</div>
+          <div class="intro-step-text">足の指をギュッと5秒間握り締め、一気にパッと力を抜きます。この「緊張→弛緩」を全身で繰り返します。</div>
+        </div>
+        <div class="intro-step-item">
+          <div class="intro-step-label">② 順番に全身へ</div>
+          <div class="intro-step-text">足先 → ふくらはぎ → 太もも → お腹 → 手 → 腕 → 肩 → 顔の順に行います。</div>
+        </div>
+        <div class="intro-step-item">
+          <div class="intro-step-label">③ 完全にリラックス</div>
+          <div class="intro-step-text">全身の力が完全に抜けたら、目を閉じてそのままの状態を30秒間保ちます。</div>
+        </div>
+      </div>
+
+      <div class="intro-section">
+        <div class="intro-section-title">👁️ 視点固定法</div>
+        <div class="intro-step-text">天井や壁の一点をじっと見つめ続けます。まばたきを減らし、視線を動かさないようにします。目が重くなってきたら自然に目を閉じてください。これが催眠状態の入口です。</div>
+      </div>
+
+      <button class="intro-next-btn" onclick="hideIntro(); showMenu();">
+        ✦ STEP 2 催眠メニューへ進む
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== STEP2：催眠メニュー ===== -->
+  <div id="menu-screen">
+    <div class="menu-header">
+      <button class="back-btn" onclick="hideMenu()">← 戻る</button>
+      <div class="menu-header-step">STEP 2</div>
+      <div class="menu-header-title">✦ 催眠メニューを選ぶ</div>
+    </div>
+    <div class="menu-content">
+      <div class="menu-grid">
+        <button class="menu-btn" onclick="startSession('sleep')"><span class="icon">🌙</span><span class="label">睡眠導入</span><span class="desc">深いリラックスへ誘う</span></button>
+        <button class="menu-btn" onclick="startSession('relax')"><span class="icon">🌊</span><span class="label">緊張緩和</span><span class="desc">ストレスを手放す</span></button>
+        <button class="menu-btn" onclick="startSession('motivation')"><span class="icon">⚡</span><span class="label">やる気スイッチ</span><span class="desc">集中力を高める</span></button>
+        <button class="menu-btn" onclick="startSession('tasty')"><span class="icon">🍽️</span><span class="label">美味しくなる</span><span class="desc">食の喜びを増幅</span></button>
+        <button class="menu-btn" onclick="startSession('sweet')"><span class="icon">🍯</span><span class="label">味が甘くなる</span><span class="desc">甘みを感じやすくする</span></button>
+        <button class="menu-btn" onclick="startSession('rich')"><span class="icon">🌶️</span><span class="label">味が濃くなる</span><span class="desc">風味を引き出す</span></button>
+        <button class="menu-btn" onclick="startSession('focus')"><span class="icon">🎯</span><span class="label">集中モード</span><span class="desc">雑念を取り除く</span></button>
+        <button class="menu-btn" onclick="startSession('confidence')"><span class="icon">🌟</span><span class="label">自信を高める</span><span class="desc">内なる力を引き出す</span></button>
+        <button class="menu-btn" onclick="startSession('pain')"><span class="icon">🌿</span><span class="label">痛み緩和</span><span class="desc">不快感を和らげる</span></button>
+        <button class="menu-btn" onclick="startSession('anger')"><span class="icon">🕊️</span><span class="label">怒りが鎮まる</span><span class="desc">心を穏やかにする</span></button>
+        <button class="menu-btn" onclick="startSession('trauma')"><span class="icon">🌸</span><span class="label">トラウマが消える</span><span class="desc">過去から解放される</span></button>
+        <button class="menu-btn" onclick="startSession('reset')"><span class="icon">♻️</span><span class="label">催眠リセット</span><span class="desc">催眠を解く</span></button>
+      </div>
+    </div>
+    <div class="menu-back-bar">
+      <button class="intro-next-btn" onclick="hideMenu(); showAwaken();">
+        ✦ STEP 3 完全覚醒へ進む
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== STEP3：完全覚醒 ===== -->
+  <div id="awaken-screen">
+    <div class="awaken-header">
+      <button class="back-btn" onclick="hideAwaken()">← 戻る</button>
+      <div class="awaken-header-title">STEP 3</div>
+      <div class="awaken-header-main">☀️ 完全覚醒</div>
+    </div>
+    <div class="awaken-content">
+      <div class="awaken-section">
+        <div class="awaken-section-title">🔢 カウントアップ覚醒法</div>
+        <div class="awaken-step-text">
+          1から5まで数えながら、段階的に意識を戻していきます。<br><br>
+          <strong style="color:#ffd080">1</strong>　意識が戻り始めます<br>
+          <strong style="color:#ffd080">2</strong>　体の感覚が戻ります<br>
+          <strong style="color:#ffd080">3</strong>　手足がしっかりしてきます<br>
+          <strong style="color:#ffd080">4</strong>　目がぱっちりと開いてきます<br>
+          <strong style="color:#ffd080">5</strong>　完全に覚醒しています！
+        </div>
+        <div class="breath-visual">
+          <div id="awaken-circle">タップして<br>開始</div>
+        </div>
+        <button class="awaken-btn" onclick="startAwaken()">☀️ カウントアップを開始する</button>
+      </div>
+
+      <div class="awaken-section">
+        <div class="awaken-section-title">👀 目の覚醒ストレッチ</div>
+        <div class="awaken-step-text">
+          ① 目を強くギュッと閉じて3秒キープ、パッと大きく開く（3回）<br><br>
+          ② 眼球を上・下・左・右・ぐるりと大きく回す（各方向2回）<br><br>
+          ③ 遠くを10秒見つめてから、手のひらを顔の前に10秒見つめる（3回）<br><br>
+          ④ こめかみを指先で優しく円を描くようにマッサージする（10秒）
+        </div>
+      </div>
+
+      <div class="awaken-section">
+        <div class="awaken-section-title">🤸 全身覚醒法</div>
+        <div class="awaken-step-text">
+          ① 両手をグーパーグーパーと素早く10回<br><br>
+          ② 肩を前後に大きく10回まわす<br><br>
+          ③ 深呼吸をしながら両腕を大きく伸びをする（3回）<br><br>
+          ④ 軽く顔をパチパチと叩いて刺激を与える
+        </div>
+      </div>
+
+      <button class="awaken-finish-btn" onclick="hideAwaken()">
+        ✅ 覚醒完了！トップへ戻る
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== セッション画面 ===== -->
   <div id="session-screen">
     <div id="canvas-container">
       <canvas id="hcanvas"></canvas>
-      <div id="suggestion-overlay">
-        <div id="suggestion-text"></div>
-      </div>
+      <div id="suggestion-overlay"><div id="suggestion-text"></div></div>
     </div>
     <div class="session-footer">
       <div class="session-title" id="session-title"></div>
@@ -156,253 +467,117 @@ body {
 </div>
 
 <script>
-var sessions = {
-  sleep: {
-    title: '🌙 睡眠導入', freq: 4, freqName: 'シータ波',
-    color: ['#1a0a4a','#4a1a8a','#8a3aff','#c89aff'], pattern: 'spiral', speed: 0.3,
-    messages: ['まぶたが\n重くなります…','全身の力が\n抜けていきます…','深い眠りへ\n沈んでいきます…','安らかな\n眠りに包まれます…','ゆっくりと\n目を閉じてください…']
-  },
-  relax: {
-    title: '🌊 緊張緩和', freq: 8, freqName: 'アルファ波',
-    color: ['#001a3a','#0a4a7a','#1a8aaa','#4ad4ff'], pattern: 'wave', speed: 0.4,
-    messages: ['息をゆっくり\n吐いてください…','肩の力が\n抜けていきます…','心が静まって\nいきます…','穏やかな平和が\n広がります…','全ての緊張が\n溶けていきます…']
-  },
-  motivation: {
-    title: '⚡ やる気スイッチ', freq: 40, freqName: 'ガンマ波',
-    color: ['#1a1000','#4a3000','#c87a00','#ffd040'], pattern: 'pulse', speed: 1.2,
-    messages: ['エネルギーが\n高まります…','意欲が\n湧き上がります…','やる気スイッチが\nONになります！','集中力が\n最大になります…','あなたには\nできる力があります！']
-  },
-  tasty: {
-    title: '🍽️ 美味しくなる', freq: 10, freqName: 'アルファ波',
-    color: ['#1a0a00','#4a2000','#c84a10','#ff8060'], pattern: 'bloom', speed: 0.5,
-    messages: ['味覚が\n研ぎ澄まされます…','一口一口が\n特別な体験に…','食の喜びが\n広がります…','美味しさが\n何倍にもなります…','食事が\n至福の時間になります…']
-  },
-  sweet: {
-    title: '🍯 味が甘くなる', freq: 10, freqName: 'アルファ波',
-    color: ['#1a0d00','#5a2a00','#e08020','#ffd080'], pattern: 'ripple', speed: 0.5,
-    messages: ['口の中に\n甘みが広がります…','優しい甘さを\n感じてください…','蜂蜜のような\n甘みに包まれます…','甘さが\n全身に溶け込みます…','すべてが\n甘く感じられます…']
-  },
-  rich: {
-    title: '🌶️ 味が濃くなる', freq: 14, freqName: 'アルファ波',
-    color: ['#1a0000','#500010','#c01030','#ff4060'], pattern: 'star', speed: 0.7,
-    messages: ['風味が\n深まります…','口いっぱいに\n広がる味わい…','豊かなコクを\n感じます…','食の深みが\n増していきます…','すべての味が\n濃くなります…']
-  },
-  focus: {
-    title: '🎯 集中モード', freq: 20, freqName: 'ベータ波',
-    color: ['#000a1a','#001a4a','#0050c0','#40a0ff'], pattern: 'grid', speed: 0.9,
-    messages: ['雑念が\n消えていきます…','意識が\n研ぎ澄まされます…','目の前のことだけに\n集中します…','思考が\nクリアになります…','最高の\nパフォーマンスへ…']
-  },
-  confidence: {
-    title: '🌟 自信を高める', freq: 10, freqName: 'アルファ波',
-    color: ['#1a1500','#4a3a00','#c0a000','#ffe040'], pattern: 'bloom', speed: 0.5,
-    messages: ['あなたには\n力があります…','自分を\n信じてください…','内なる輝きが\n増します…','可能性が\n広がっていきます…','あなたは\n素晴らしい存在です…']
-  },
-  pain: {
-    title: '🌿 痛み緩和', freq: 6, freqName: 'シータ波',
-    color: ['#001a10','#004a30','#00a060','#40f0b0'], pattern: 'spiral', speed: 0.25,
-    messages: ['体が\nリラックスします…','不快感が\n和らいでいきます…','心地よい感覚に\n包まれます…','体が楽に\nなっていきます…','痛みが\n遠ざかっていきます…']
-  },
-  reset: {
-    title: '♻️ 催眠リセット', freq: 20, freqName: 'ベータ波',
-    color: ['#0a0a0a','#303030','#888888','#ffffff'], pattern: 'reset', speed: 1.0,
-    messages: ['意識が\n戻ってきます…','体の感覚が\n戻ります…','すっきりと\n目覚めます…','催眠が\n解けていきます…','普通の状態に\n戻りました。']
-  }
+// 画面遷移
+function showIntro(){ document.getElementById('intro-screen').style.display='flex'; }
+function hideIntro(){ document.getElementById('intro-screen').style.display='none'; }
+function showMenu(){ document.getElementById('menu-screen').style.display='flex'; }
+function hideMenu(){ document.getElementById('menu-screen').style.display='none'; }
+function showAwaken(){ document.getElementById('awaken-screen').style.display='flex'; }
+function hideAwaken(){ document.getElementById('awaken-screen').style.display='none'; }
+
+// 呼吸ガイド
+var breathTimer=null, breathPhase=0;
+function startBreath(){
+  if(breathTimer){clearTimeout(breathTimer);breathTimer=null;}
+  breathPhase=0; runBreath();
+}
+function runBreath(){
+  var el=document.getElementById('breath-circle');
+  var phases=[
+    {text:'鼻から\n吸って',dur:4000,scale:1.3,color:'#1a4a8a'},
+    {text:'止めて',dur:4000,scale:1.3,color:'#2a3a7a'},
+    {text:'口から\nゆっくり\n吐いて',dur:8000,scale:0.85,color:'#0a2a5a'},
+  ];
+  var p=phases[breathPhase%3];
+  el.textContent=p.text;
+  el.style.transition='transform '+(p.dur/1000)+'s ease-in-out, background '+( p.dur/1000)+'s';
+  el.style.transform='scale('+p.scale+')';
+  el.style.background='radial-gradient(circle, '+p.color+', #0a1a3a)';
+  breathPhase++;
+  breathTimer=setTimeout(runBreath, p.dur);
+}
+
+// 覚醒カウント
+var awakenTimer=null, awakenCount=1;
+function startAwaken(){
+  if(awakenTimer){clearTimeout(awakenTimer);awakenTimer=null;}
+  awakenCount=1; runAwaken();
+}
+function runAwaken(){
+  var el=document.getElementById('awaken-circle');
+  var labels=['','意識が\n戻ります','体の感覚が\n戻ります','手足が\nしっかりします','目が\nぱっちり！','完全に\n覚醒！'];
+  if(awakenCount>5){el.textContent='覚醒\n完了！';el.style.transform='scale(1.2)';return;}
+  el.textContent=awakenCount+'\n'+labels[awakenCount];
+  el.style.transition='transform 0.5s';
+  el.style.transform='scale(1.1)';
+  setTimeout(function(){el.style.transform='scale(1)';},500);
+  awakenCount++;
+  awakenTimer=setTimeout(runAwaken,3000);
+}
+
+// セッションデータ
+var sessions={
+  sleep:      {title:'🌙 睡眠導入',    freq:4,  freqName:'シータ波',  color:['#1a0a4a','#4a1a8a','#8a3aff','#c89aff'],pattern:'spiral',speed:0.3,  messages:['まぶたが\n重くなります…','全身の力が\n抜けていきます…','深い眠りへ\n沈んでいきます…','安らかな\n眠りに包まれます…','ゆっくりと\n目を閉じてください…']},
+  relax:      {title:'🌊 緊張緩和',    freq:8,  freqName:'アルファ波',color:['#001a3a','#0a4a7a','#1a8aaa','#4ad4ff'],pattern:'wave',  speed:0.4,  messages:['息をゆっくり\n吐いてください…','肩の力が\n抜けていきます…','心が静まって\nいきます…','穏やかな平和が\n広がります…','全ての緊張が\n溶けていきます…']},
+  motivation: {title:'⚡ やる気スイッチ',freq:40,freqName:'ガンマ波', color:['#1a1000','#4a3000','#c87a00','#ffd040'],pattern:'pulse', speed:1.2,  messages:['エネルギーが\n高まります…','意欲が\n湧き上がります…','やる気スイッチが\nONになります！','集中力が\n最大になります…','あなたには\nできる力があります！']},
+  tasty:      {title:'🍽️ 美味しくなる',freq:10, freqName:'アルファ波',color:['#1a0a00','#4a2000','#c84a10','#ff8060'],pattern:'bloom', speed:0.5,  messages:['味覚が\n研ぎ澄まされます…','一口一口が\n特別な体験に…','食の喜びが\n広がります…','美味しさが\n何倍にもなります…','食事が\n至福の時間になります…']},
+  sweet:      {title:'🍯 味が甘くなる',freq:10, freqName:'アルファ波',color:['#1a0d00','#5a2a00','#e08020','#ffd080'],pattern:'ripple',speed:0.5,  messages:['口の中に\n甘みが広がります…','優しい甘さを\n感じてください…','蜂蜜のような\n甘みに包まれます…','甘さが\n全身に溶け込みます…','すべてが\n甘く感じられます…']},
+  rich:       {title:'🌶️ 味が濃くなる',freq:14, freqName:'アルファ波',color:['#1a0000','#500010','#c01030','#ff4060'],pattern:'star',  speed:0.7,  messages:['風味が\n深まります…','口いっぱいに\n広がる味わい…','豊かなコクを\n感じます…','食の深みが\n増していきます…','すべての味が\n濃くなります…']},
+  focus:      {title:'🎯 集中モード',  freq:20, freqName:'ベータ波', color:['#000a1a','#001a4a','#0050c0','#40a0ff'],pattern:'grid',  speed:0.9,  messages:['雑念が\n消えていきます…','意識が\n研ぎ澄まされます…','目の前のことだけに\n集中します…','思考が\nクリアになります…','最高の\nパフォーマンスへ…']},
+  confidence: {title:'🌟 自信を高める',freq:10, freqName:'アルファ波',color:['#1a1500','#4a3a00','#c0a000','#ffe040'],pattern:'bloom', speed:0.5,  messages:['あなたには\n力があります…','自分を\n信じてください…','内なる輝きが\n増します…','可能性が\n広がっていきます…','あなたは\n素晴らしい存在です…']},
+  pain:       {title:'🌿 痛み緩和',   freq:6,  freqName:'シータ波', color:['#001a10','#004a30','#00a060','#40f0b0'],pattern:'spiral',speed:0.25, messages:['体が\nリラックスします…','不快感が\n和らいでいきます…','心地よい感覚に\n包まれます…','体が楽に\nなっていきます…','痛みが\n遠ざかっていきます…']},
+  anger:      {title:'🕊️ 怒りが鎮まる',freq:6, freqName:'シータ波', color:['#0a1a00','#204a00','#508000','#90c040'],pattern:'wave',  speed:0.3,  messages:['怒りが\n溶けていきます…','心が\n静まります…','穏やかな気持ちに\nなります…','平和な心が\n広がります…','すべてが\n穏やかです…']},
+  trauma:     {title:'🌸 トラウマが消える',freq:4,freqName:'シータ波',color:['#1a0a2a','#3a1a5a','#7a3a9a','#c080d0'],pattern:'bloom', speed:0.25, messages:['過去が\n遠ざかります…','心の傷が\n癒されます…','安心感に\n包まれます…','あなたは\n自由です…','新しい自分が\n生まれます…']},
+  reset:      {title:'♻️ 催眠リセット',freq:20, freqName:'ベータ波', color:['#0a0a0a','#303030','#888888','#ffffff'],pattern:'reset', speed:1.0,  messages:['意識が\n戻ってきます…','体の感覚が\n戻ります…','すっきりと\n目覚めます…','催眠が\n解けていきます…','普通の状態に\n戻りました。']},
 };
 
-var FADE_DURATION = 1200, SHOW_DURATION = 3000;
-var animId, audioCtx, oscillators = [], msgTimer = null;
-var t = 0, currentMsgIdx = 0, currentSession = null;
+var FADE=1200,SHOW=3000;
+var animId,audioCtx,oscillators=[],msgTimer=null,t=0,msgIdx=0,curS=null;
 
-function resizeCanvas() {
-  var container = document.getElementById('canvas-container');
-  var canvas = document.getElementById('hcanvas');
-  canvas.width = container.clientWidth;
-  canvas.height = container.clientHeight;
-}
+function resizeCanvas(){var c=document.getElementById('canvas-container'),cv=document.getElementById('hcanvas');cv.width=c.clientWidth;cv.height=c.clientHeight;}
+function showNext(){var el=document.getElementById('suggestion-text');el.style.opacity='0';setTimeout(function(){msgIdx=(msgIdx+1)%curS.messages.length;el.textContent=curS.messages[msgIdx];el.style.opacity='1';msgTimer=setTimeout(showNext,SHOW+FADE);},FADE);}
 
-function showNextMessage() {
-  var el = document.getElementById('suggestion-text');
-  el.style.opacity = '0';
-  setTimeout(function() {
-    currentMsgIdx = (currentMsgIdx + 1) % currentSession.messages.length;
-    el.textContent = currentSession.messages[currentMsgIdx];
-    el.style.opacity = '1';
-    msgTimer = setTimeout(showNextMessage, SHOW_DURATION + FADE_DURATION);
-  }, FADE_DURATION);
-}
-
-function startSession(type) {
-  currentSession = sessions[type];
-  var s = currentSession;
-  document.getElementById('menu-screen').style.display = 'none';
-  document.getElementById('session-screen').style.display = 'flex';
-  setTimeout(function() {
-    resizeCanvas();
-    startCanvas(s);
-  }, 50);
-  document.getElementById('session-title').textContent = s.title;
-  document.getElementById('freq-badge').textContent = '🎵 特殊周波数: ' + s.freq + 'Hz (' + s.freqName + ')';
-  currentMsgIdx = 0;
-  var el = document.getElementById('suggestion-text');
-  el.style.transition = 'none'; el.style.opacity = '0';
-  el.textContent = s.messages[0];
-  setTimeout(function() {
-    el.style.transition = 'opacity ' + FADE_DURATION + 'ms ease';
-    el.style.opacity = '1';
-    msgTimer = setTimeout(showNextMessage, SHOW_DURATION + FADE_DURATION);
-  }, 300);
+function startSession(type){
+  curS=sessions[type];var s=curS;
+  document.getElementById('session-screen').style.display='flex';
+  setTimeout(function(){resizeCanvas();startCanvas(s);},50);
+  document.getElementById('session-title').textContent=s.title;
+  document.getElementById('freq-badge').textContent='🎵 特殊周波数: '+s.freq+'Hz ('+s.freqName+')';
+  msgIdx=0;var el=document.getElementById('suggestion-text');
+  el.style.transition='none';el.style.opacity='0';el.textContent=s.messages[0];
+  setTimeout(function(){el.style.transition='opacity '+FADE+'ms ease';el.style.opacity='1';msgTimer=setTimeout(showNext,SHOW+FADE);},300);
   startAudio(s.freq);
 }
 
-function startAudio(freq) {
-  try {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    var gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-    gain.connect(audioCtx.destination);
-    var oL = audioCtx.createOscillator(), oR = audioCtx.createOscillator();
-    var merger = audioCtx.createChannelMerger(2);
-    oL.frequency.value = 200; oR.frequency.value = 200 + freq;
-    oL.type = oR.type = 'sine';
-    var gL = audioCtx.createGain(), gR = audioCtx.createGain();
-    gL.gain.value = gR.gain.value = 0.5;
-    oL.connect(gL); oR.connect(gR);
-    gL.connect(merger, 0, 0); gR.connect(merger, 0, 1);
-    merger.connect(gain); oL.start(); oR.start();
-    oscillators = [oL, oR];
-  } catch(e) {}
-}
+function startAudio(freq){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();var g=audioCtx.createGain();g.gain.setValueAtTime(0.06,audioCtx.currentTime);g.connect(audioCtx.destination);var oL=audioCtx.createOscillator(),oR=audioCtx.createOscillator(),m=audioCtx.createChannelMerger(2);oL.frequency.value=200;oR.frequency.value=200+freq;oL.type=oR.type='sine';var gL=audioCtx.createGain(),gR=audioCtx.createGain();gL.gain.value=gR.gain.value=0.5;oL.connect(gL);oR.connect(gR);gL.connect(m,0,0);gR.connect(m,0,1);m.connect(g);oL.start();oR.start();oscillators=[oL,oR];}catch(e){}}
 
-function startCanvas(s) {
-  var canvas = document.getElementById('hcanvas');
-  var ctx = canvas.getContext('2d');
-  t = 0;
-  function draw() {
-    var W = canvas.width, H = canvas.height;
-    var cx = W/2, cy = H/2;
-    var R = Math.min(W, H) * 0.46;
-    t += s.speed * 0.015;
-    ctx.clearRect(0,0,W,H);
-    var c = s.color;
-
-    if (s.pattern==='spiral') {
-      ctx.fillStyle='#000010'; ctx.fillRect(0,0,W,H);
-      for (var i=0;i<150;i++) {
-        var a=(i/150)*Math.PI*14+t, r=(i/150)*R;
-        var alpha=0.5+0.5*Math.sin(t*2+i*0.1);
-        ctx.beginPath(); ctx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,3,0,Math.PI*2);
-        ctx.fillStyle=c[Math.min(Math.floor((i/150)*(c.length-1)),c.length-1)]+Math.floor(alpha*200).toString(16).padStart(2,'0');
-        ctx.fill();
-      }
-    } else if (s.pattern==='wave') {
-      ctx.fillStyle='#000510'; ctx.fillRect(0,0,W,H);
-      for (var ring=1;ring<=10;ring++) {
-        var pts=Math.floor(ring*14); ctx.beginPath();
-        var rv=ring*R/10;
-        for (var i=0;i<=pts;i++) {
-          var a=(i/pts)*Math.PI*2, wave=Math.sin(a*3+t*(ring*0.5))*(R*0.06);
-          var rx=cx+Math.cos(a)*(rv+wave), ry=cy+Math.sin(a)*(rv+wave);
-          i===0?ctx.moveTo(rx,ry):ctx.lineTo(rx,ry);
-        }
-        ctx.closePath();
-        ctx.strokeStyle=c[Math.min(ring-1,c.length-1)]+Math.floor((0.15+0.1*Math.sin(t+ring))*255).toString(16).padStart(2,'0');
-        ctx.lineWidth=2; ctx.stroke();
-      }
-    } else if (s.pattern==='pulse') {
-      ctx.fillStyle='#050300'; ctx.fillRect(0,0,W,H);
-      for (var ring=1;ring<=12;ring++) {
-        var r=ring*(R/12)+Math.sin(t*3-ring*0.5)*(R*0.05);
-        var alpha=0.4+0.4*Math.sin(t*4-ring*0.8);
-        ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
-        ctx.strokeStyle=c[Math.min(Math.floor(ring/3),c.length-1)]+Math.floor(alpha*255).toString(16).padStart(2,'0');
-        ctx.lineWidth=2.5; ctx.stroke();
-      }
-    } else if (s.pattern==='ripple') {
-      ctx.fillStyle='#080400'; ctx.fillRect(0,0,W,H);
-      for (var i=0;i<6;i++) {
-        var r=((t*50+i*58)%(R*1.1))+10, alpha=1-r/(R*1.1);
-        ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
-        ctx.strokeStyle=c[i%c.length]+Math.floor(alpha*200).toString(16).padStart(2,'0');
-        ctx.lineWidth=2.5; ctx.stroke();
-      }
-    } else if (s.pattern==='bloom') {
-      ctx.fillStyle='#080300'; ctx.fillRect(0,0,W,H);
-      for (var p=0;p<8;p++) {
-        var baseAngle=(p/8)*Math.PI*2+t*0.3, len=R*0.9+Math.sin(t*0.7+p)*R*0.1;
-        ctx.beginPath(); ctx.moveTo(cx,cy);
-        for (var j=0;j<=30;j++) {
-          var a=baseAngle+(j/30-0.5)*(Math.PI/8)*2, r=Math.sin((j/30)*Math.PI)*len;
-          ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
-        }
-        ctx.closePath();
-        ctx.fillStyle=c[p%c.length]+Math.floor((0.3+0.2*Math.sin(t+p))*255).toString(16).padStart(2,'0');
-        ctx.fill();
-      }
-    } else if (s.pattern==='star') {
-      ctx.fillStyle='#050000'; ctx.fillRect(0,0,W,H);
-      for (var layer=0;layer<5;layer++) {
-        var pts=6+layer*2; ctx.beginPath();
-        for (var i=0;i<=pts*2;i++) {
-          var a=(i/(pts*2))*Math.PI*2+t*(0.3+layer*0.1);
-          var r=(i%2===0)?R*0.2+layer*R*0.16:R*0.1+layer*R*0.08;
-          i===0?ctx.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r):ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
-        }
-        ctx.closePath();
-        ctx.strokeStyle=c[layer%c.length]+Math.floor((0.25+0.15*Math.sin(t*1.5+layer))*255).toString(16).padStart(2,'0');
-        ctx.lineWidth=2; ctx.stroke();
-      }
-    } else if (s.pattern==='grid') {
-      ctx.fillStyle='#000208'; ctx.fillRect(0,0,W,H);
-      var sp=Math.round(W/14);
-      for (var gx=0;gx<=W;gx+=sp) {
-        var wave=Math.sin(gx/80+t*2)*6;
-        ctx.beginPath(); ctx.moveTo(gx+wave,0); ctx.lineTo(gx-wave,H);
-        ctx.strokeStyle=c[2]+Math.floor((0.08+0.06*Math.sin(gx/80+t))*255).toString(16).padStart(2,'0');
-        ctx.lineWidth=0.5; ctx.stroke();
-      }
-      for (var gy=0;gy<=H;gy+=sp) {
-        var wave=Math.sin(gy/80+t*2)*6;
-        ctx.beginPath(); ctx.moveTo(0,gy+wave); ctx.lineTo(W,gy-wave);
-        ctx.strokeStyle=c[3]+Math.floor((0.08+0.06*Math.sin(gy/80+t))*255).toString(16).padStart(2,'0');
-        ctx.lineWidth=0.5; ctx.stroke();
-      }
-      ctx.beginPath(); ctx.arc(cx,cy,R*0.3+Math.sin(t*2)*R*0.05,0,Math.PI*2);
-      ctx.fillStyle=c[3]+'30'; ctx.fill();
-    } else if (s.pattern==='reset') {
-      ctx.fillStyle='#080808'; ctx.fillRect(0,0,W,H);
-      for (var i=0;i<12;i++) {
-        var a=(i/12)*Math.PI*2+t;
-        ctx.beginPath(); ctx.arc(cx+Math.cos(a)*R*0.6,cy+Math.sin(a)*R*0.6,10,0,Math.PI*2);
-        ctx.fillStyle='rgba(200,200,200,'+(i/12)*0.8+')'; ctx.fill();
-      }
-      ctx.beginPath(); ctx.arc(cx,cy,R*0.22+Math.sin(t*3)*R*0.04,0,Math.PI*2);
-      ctx.fillStyle='#ffffff20'; ctx.fill();
-    }
-
-    ctx.beginPath(); ctx.arc(cx,cy,R*0.04,0,Math.PI*2);
-    ctx.fillStyle='rgba(200,154,255,0.7)'; ctx.fill();
-    ctx.beginPath(); ctx.arc(cx,cy,R*0.02,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.95)'; ctx.fill();
-
-    animId = requestAnimationFrame(draw);
+function startCanvas(s){
+  var canvas=document.getElementById('hcanvas'),ctx=canvas.getContext('2d');t=0;
+  function draw(){
+    var W=canvas.width,H=canvas.height,cx=W/2,cy=H/2,R=Math.min(W,H)*0.46,c=s.color;
+    t+=s.speed*0.015;ctx.clearRect(0,0,W,H);
+    if(s.pattern==='spiral'){ctx.fillStyle='#000010';ctx.fillRect(0,0,W,H);for(var i=0;i<150;i++){var a=(i/150)*Math.PI*14+t,r=(i/150)*R,alpha=0.5+0.5*Math.sin(t*2+i*0.1);ctx.beginPath();ctx.arc(cx+Math.cos(a)*r,cy+Math.sin(a)*r,3,0,Math.PI*2);ctx.fillStyle=c[Math.min(Math.floor((i/150)*(c.length-1)),c.length-1)]+Math.floor(alpha*200).toString(16).padStart(2,'0');ctx.fill();}}
+    else if(s.pattern==='wave'){ctx.fillStyle='#000510';ctx.fillRect(0,0,W,H);for(var ring=1;ring<=10;ring++){var pts=Math.floor(ring*14),rv=ring*R/10;ctx.beginPath();for(var i=0;i<=pts;i++){var a=(i/pts)*Math.PI*2,wave=Math.sin(a*3+t*(ring*0.5))*(R*0.06);i===0?ctx.moveTo(cx+Math.cos(a)*(rv+wave),cy+Math.sin(a)*(rv+wave)):ctx.lineTo(cx+Math.cos(a)*(rv+wave),cy+Math.sin(a)*(rv+wave));}ctx.closePath();ctx.strokeStyle=c[Math.min(ring-1,c.length-1)]+Math.floor((0.15+0.1*Math.sin(t+ring))*255).toString(16).padStart(2,'0');ctx.lineWidth=2;ctx.stroke();}}
+    else if(s.pattern==='pulse'){ctx.fillStyle='#050300';ctx.fillRect(0,0,W,H);for(var ring=1;ring<=12;ring++){var r=ring*(R/12)+Math.sin(t*3-ring*0.5)*(R*0.05),alpha=0.4+0.4*Math.sin(t*4-ring*0.8);ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle=c[Math.min(Math.floor(ring/3),c.length-1)]+Math.floor(alpha*255).toString(16).padStart(2,'0');ctx.lineWidth=2.5;ctx.stroke();}}
+    else if(s.pattern==='ripple'){ctx.fillStyle='#080400';ctx.fillRect(0,0,W,H);for(var i=0;i<6;i++){var r=((t*50+i*58)%(R*1.1))+10,alpha=1-r/(R*1.1);ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle=c[i%c.length]+Math.floor(alpha*200).toString(16).padStart(2,'0');ctx.lineWidth=2.5;ctx.stroke();}}
+    else if(s.pattern==='bloom'){ctx.fillStyle='#080300';ctx.fillRect(0,0,W,H);for(var p=0;p<8;p++){var ba=(p/8)*Math.PI*2+t*0.3,len=R*0.9+Math.sin(t*0.7+p)*R*0.1;ctx.beginPath();ctx.moveTo(cx,cy);for(var j=0;j<=30;j++){var a=ba+(j/30-0.5)*(Math.PI/8)*2,r=Math.sin((j/30)*Math.PI)*len;ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);}ctx.closePath();ctx.fillStyle=c[p%c.length]+Math.floor((0.3+0.2*Math.sin(t+p))*255).toString(16).padStart(2,'0');ctx.fill();}}
+    else if(s.pattern==='star'){ctx.fillStyle='#050000';ctx.fillRect(0,0,W,H);for(var layer=0;layer<5;layer++){var pts=6+layer*2;ctx.beginPath();for(var i=0;i<=pts*2;i++){var a=(i/(pts*2))*Math.PI*2+t*(0.3+layer*0.1),r=(i%2===0)?R*0.2+layer*R*0.16:R*0.1+layer*R*0.08;i===0?ctx.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r):ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);}ctx.closePath();ctx.strokeStyle=c[layer%c.length]+Math.floor((0.25+0.15*Math.sin(t*1.5+layer))*255).toString(16).padStart(2,'0');ctx.lineWidth=2;ctx.stroke();}}
+    else if(s.pattern==='grid'){ctx.fillStyle='#000208';ctx.fillRect(0,0,W,H);var sp=Math.round(W/14);for(var gx=0;gx<=W;gx+=sp){var wave=Math.sin(gx/80+t*2)*6;ctx.beginPath();ctx.moveTo(gx+wave,0);ctx.lineTo(gx-wave,H);ctx.strokeStyle=c[2]+Math.floor((0.08+0.06*Math.sin(gx/80+t))*255).toString(16).padStart(2,'0');ctx.lineWidth=0.5;ctx.stroke();}for(var gy=0;gy<=H;gy+=sp){var wave=Math.sin(gy/80+t*2)*6;ctx.beginPath();ctx.moveTo(0,gy+wave);ctx.lineTo(W,gy-wave);ctx.strokeStyle=c[3]+Math.floor((0.08+0.06*Math.sin(gy/80+t))*255).toString(16).padStart(2,'0');ctx.lineWidth=0.5;ctx.stroke();}ctx.beginPath();ctx.arc(cx,cy,R*0.3+Math.sin(t*2)*R*0.05,0,Math.PI*2);ctx.fillStyle=c[3]+'30';ctx.fill();}
+    else if(s.pattern==='reset'){ctx.fillStyle='#080808';ctx.fillRect(0,0,W,H);for(var i=0;i<12;i++){var a=(i/12)*Math.PI*2+t;ctx.beginPath();ctx.arc(cx+Math.cos(a)*R*0.6,cy+Math.sin(a)*R*0.6,10,0,Math.PI*2);ctx.fillStyle='rgba(200,200,200,'+(i/12)*0.8+')';ctx.fill();}ctx.beginPath();ctx.arc(cx,cy,R*0.22+Math.sin(t*3)*R*0.04,0,Math.PI*2);ctx.fillStyle='#ffffff20';ctx.fill();}
+    ctx.beginPath();ctx.arc(cx,cy,R*0.04,0,Math.PI*2);ctx.fillStyle='rgba(200,154,255,0.7)';ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,R*0.02,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.95)';ctx.fill();
+    animId=requestAnimationFrame(draw);
   }
   draw();
 }
 
-function stopSession() {
-  cancelAnimationFrame(animId); clearTimeout(msgTimer);
-  if (audioCtx) {
-    oscillators.forEach(function(o) { try { o.stop(); } catch(e){} });
-    audioCtx.close(); audioCtx = null; oscillators = [];
-  }
-  document.getElementById('suggestion-text').style.opacity = '0';
-  document.getElementById('session-screen').style.display = 'none';
-  document.getElementById('menu-screen').style.display = 'block';
+function stopSession(){
+  cancelAnimationFrame(animId);clearTimeout(msgTimer);
+  if(audioCtx){oscillators.forEach(function(o){try{o.stop();}catch(e){}});audioCtx.close();audioCtx=null;oscillators=[];}
+  document.getElementById('suggestion-text').style.opacity='0';
+  document.getElementById('session-screen').style.display='none';
 }
-
-window.addEventListener('resize', function() {
-  if (document.getElementById('session-screen').style.display !== 'none') resizeCanvas();
-});
+window.addEventListener('resize',function(){if(document.getElementById('session-screen').style.display!=='none')resizeCanvas();});
 </script>
 </body>
 </html>
