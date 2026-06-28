@@ -152,12 +152,12 @@ body {
   padding: 20px 0 10px;
 }
 #breath-circle {
-  width: 120px; height: 120px; border-radius: 50%;
+  width: 150px; height: 150px; border-radius: 50%;
   background: radial-gradient(circle, #1a4a8a, #0a1a3a);
   border: 2px solid #3060a0;
   display: flex; align-items: center; justify-content: center;
   transition: transform 0s;
-  font-size: 13px; color: #60b0ff; font-weight: 600; text-align: center; line-height: 1.4;
+  font-size: 13px; color: #60b0ff; font-weight: 600; text-align: center; line-height: 1.5;
 }
 .breath-btn {
   display: block; width: 100%; padding: 14px;
@@ -276,6 +276,7 @@ body {
 .session-title { font-size: 16px; font-weight: 500; color: #c8b4ff; letter-spacing: 0.08em; text-align: center; }
 .freq-badge { font-size: 11px; color: #5a4a90; letter-spacing: 0.05em; text-align: center; }
 .session-credit { font-size: 10px; color: #2a2050; letter-spacing: 0.08em; }
+.session-timer { font-size: 12px; color: #5a4a90; letter-spacing: 0.05em; text-align: center; }
 .stop-btn {
   margin-top: 6px; background: transparent; border: 0.5px solid #3a2e6e;
   border-radius: 20px; padding: 8px 32px; color: #8070b0; font-size: 13px;
@@ -396,9 +397,9 @@ body {
           <div class="intro-step-text">口からゆっくりと8秒かけて息を吐き出します。お腹が凹んでいくのを感じてください。</div>
         </div>
         <div class="breath-visual">
-          <div id="breath-circle">タップして<br>開始</div>
+          <div id="breath-circle" onclick="toggleBreath()" style="cursor:pointer;">タップして<br>開始</div>
         </div>
-        <button class="breath-btn" onclick="startBreath()">🌬️ 呼吸ガイドを開始する</button>
+        <p style="text-align:center;font-size:11px;color:#4080a0;margin-bottom:8px;">※ 円をタップでスタート／ストップ</p>
       </div>
 
       <div class="intro-section">
@@ -517,6 +518,7 @@ body {
     <div class="session-footer">
       <div class="session-title" id="session-title"></div>
       <div class="freq-badge" id="freq-badge"></div>
+      <div class="session-timer" id="session-timer">⏱ 残り 30:00</div>
       <div class="session-credit">提供　龍馬の手</div>
       <button class="stop-btn" onclick="stopSession()">✦ 終了する</button>
     </div>
@@ -535,21 +537,35 @@ function showAwaken(){ document.getElementById('awaken-screen').style.display='f
 function hideAwaken(){ document.getElementById('awaken-screen').style.display='none'; }
 
 // 呼吸ガイド
-var breathTimer=null, breathPhase=0;
+var breathTimer=null, breathPhase=0, breathRunning=false;
 function startBreath(){
   if(breathTimer){clearTimeout(breathTimer);breathTimer=null;}
-  breathPhase=0; runBreath();
+  breathPhase=0; breathRunning=true;
+  runBreath();
+}
+function stopBreath(){
+  if(breathTimer){clearTimeout(breathTimer);breathTimer=null;}
+  breathRunning=false;
+  var el=document.getElementById('breath-circle');
+  el.textContent='タップして\n開始';
+  el.style.transition='transform 0.5s, background 0.5s';
+  el.style.transform='scale(1)';
+  el.style.background='radial-gradient(circle, #1a4a8a, #0a1a3a)';
+}
+function toggleBreath(){
+  if(breathRunning){ stopBreath(); } else { startBreath(); }
 }
 function runBreath(){
+  if(!breathRunning) return;
   var el=document.getElementById('breath-circle');
   var phases=[
     {text:'鼻から\n吸って',dur:4000,scale:1.3,color:'#1a4a8a'},
     {text:'止めて',dur:4000,scale:1.3,color:'#2a3a7a'},
-    {text:'口から\nゆっくり\n吐いて',dur:8000,scale:0.85,color:'#0a2a5a'},
+    {text:'口から\nゆっくり吐いて',dur:8000,scale:0.85,color:'#0a2a5a'},
   ];
   var p=phases[breathPhase%3];
   el.textContent=p.text;
-  el.style.transition='transform '+(p.dur/1000)+'s ease-in-out, background '+( p.dur/1000)+'s';
+  el.style.transition='transform '+(p.dur/1000)+'s ease-in-out, background '+(p.dur/1000)+'s';
   el.style.transform='scale('+p.scale+')';
   el.style.background='radial-gradient(circle, '+p.color+', #0a1a3a)';
   breathPhase++;
@@ -592,6 +608,46 @@ var sessions={
 
 var FADE=1200,SHOW=3000;
 var animId,audioCtx,oscillators=[],msgTimer=null,t=0,msgIdx=0,curS=null;
+var wakeLock=null,sessionCountdown=null,sessionSecondsLeft=30*60;
+
+// スリープ防止
+async function requestWakeLock(){
+  try{
+    if('wakeLock' in navigator){
+      wakeLock=await navigator.wakeLock.request('screen');
+    }
+  }catch(e){console.log('WakeLock非対応:',e);}
+}
+function releaseWakeLock(){
+  if(wakeLock){wakeLock.release();wakeLock=null;}
+}
+
+// 30分タイマー
+function startSessionTimer(){
+  sessionSecondsLeft=30*60;
+  updateTimerDisplay();
+  sessionCountdown=setInterval(function(){
+    sessionSecondsLeft--;
+    updateTimerDisplay();
+    if(sessionSecondsLeft<=0){
+      clearInterval(sessionCountdown);
+      stopSession(true);
+    }
+  },1000);
+}
+function updateTimerDisplay(){
+  var m=Math.floor(sessionSecondsLeft/60);
+  var s=sessionSecondsLeft%60;
+  var el=document.getElementById('session-timer');
+  if(el){
+    el.textContent='⏱ 残り '+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if(sessionSecondsLeft<=300){ el.style.color='#ff8060'; } // 残り5分で赤く
+    else{ el.style.color='#5a4a90'; }
+  }
+}
+function stopSessionTimer(){
+  if(sessionCountdown){clearInterval(sessionCountdown);sessionCountdown=null;}
+}
 
 function resizeCanvas(){var c=document.getElementById('canvas-container'),cv=document.getElementById('hcanvas');cv.width=c.clientWidth;cv.height=c.clientHeight;}
 function showNext(){var el=document.getElementById('suggestion-text');el.style.opacity='0';setTimeout(function(){msgIdx=(msgIdx+1)%curS.messages.length;el.textContent=curS.messages[msgIdx];el.style.opacity='1';msgTimer=setTimeout(showNext,SHOW+FADE);},FADE);}
@@ -606,6 +662,8 @@ function startSession(type){
   el.style.transition='none';el.style.opacity='0';el.textContent=s.messages[0];
   setTimeout(function(){el.style.transition='opacity '+FADE+'ms ease';el.style.opacity='1';msgTimer=setTimeout(showNext,SHOW+FADE);},300);
   startAudio(s.freq);
+  requestWakeLock();
+  startSessionTimer();
 }
 
 function startAudio(freq){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();var g=audioCtx.createGain();g.gain.setValueAtTime(0.06,audioCtx.currentTime);g.connect(audioCtx.destination);var oL=audioCtx.createOscillator(),oR=audioCtx.createOscillator(),m=audioCtx.createChannelMerger(2);oL.frequency.value=200;oR.frequency.value=200+freq;oL.type=oR.type='sine';var gL=audioCtx.createGain(),gR=audioCtx.createGain();gL.gain.value=gR.gain.value=0.5;oL.connect(gL);oR.connect(gR);gL.connect(m,0,0);gR.connect(m,0,1);m.connect(g);oL.start();oR.start();oscillators=[oL,oR];}catch(e){}}
@@ -630,11 +688,19 @@ function startCanvas(s){
   draw();
 }
 
-function stopSession(){
+function stopSession(autoEnd){
   cancelAnimationFrame(animId);clearTimeout(msgTimer);
+  stopSessionTimer();
+  releaseWakeLock();
   if(audioCtx){oscillators.forEach(function(o){try{o.stop();}catch(e){}});audioCtx.close();audioCtx=null;oscillators=[];}
   document.getElementById('suggestion-text').style.opacity='0';
   document.getElementById('session-screen').style.display='none';
+  if(autoEnd){
+    // 30分自動終了時はアラートを表示
+    setTimeout(function(){
+      alert('セッションが終了しました。\nゆっくり目を開けてSTEP3の完全覚醒を行ってください。');
+    },300);
+  }
 }
 window.addEventListener('resize',function(){if(document.getElementById('session-screen').style.display!=='none')resizeCanvas();});
 </script>
